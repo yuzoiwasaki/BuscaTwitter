@@ -108,7 +108,7 @@ div#form {
   padding:10px;
   border-radius:8px;
   width:300px;
-  height:120px;
+  height:150px;
 }
 table.tweets {
   width:980px;
