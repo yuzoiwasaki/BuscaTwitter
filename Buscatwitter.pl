@@ -72,7 +72,6 @@ Twitter ID: @<input type="text" name="name" placeholder="Enter here"><br><br>
 
 @@ result.html.ep
 % layout 'default';
-
 <table class="tweets">
 % my $count = 1;
 % for my $tweet(@$tweets) {
@@ -83,9 +82,7 @@ Twitter ID: @<input type="text" name="name" placeholder="Enter here"><br><br>
   <td><%= b($tweet->{text}) %></td>
   </tr>
   % $count++;
-  % if ($count > 10) {
-  %   last;
-  % }
+  % last if $count > 10;
 % }
 </table>
 
