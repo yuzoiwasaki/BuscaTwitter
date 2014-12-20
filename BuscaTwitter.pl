@@ -76,7 +76,7 @@ Twitter ID: @<input type="text" name="name" placeholder="Enter here"><br><br>
 % my $count = 1;
 % for my $tweet(@$tweets) {
   % next if $tweet->{text} =~ /^@/ || $tweet->{text} =~ /^RT/;
-  % $tweet->{text} =~ s/(http.+)$/<a href="$1" target="_blank">$1<\/a>/g;
+  % $tweet->{text} =~ s/\b(https?\S+)$/<a href="$1" target="_blank">$1<\/a>/g;
   <tr>
   <th> <img src="<%= $tweet->{user}{profile_image_url} %>"></th>
   <td><%= b($tweet->{text}) %></td>
