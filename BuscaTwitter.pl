@@ -5,12 +5,14 @@ package Busca::Model;
 use strict;
 use warnings;
 use Net::Twitter::Lite::WithAPIv1_1;
+use Config::Pit;
 
-# Please rewrite to your own key
-my $consumer_key = 'wwwwwwww';
-my $consumer_secret = 'xxxxxxxx';
-my $access_token_secret = 'yyyyyyyy';
-my $access_token = 'zzzzzzzz';
+my $config = pit_get('BuscaTwitter', require => {
+  'consumer_key' => 'Twitter API Key',
+  'consumer_secret' => 'Twitter API Key Secret',
+  'access_token_secret' => 'Twitter Access Token Secret',
+  'access_token' => 'Twitter Access Token',
+});
 
 sub new {
   my $class = shift;
@@ -21,10 +23,10 @@ sub new {
 sub buscar_tweets {
   my ( $self, $twitter_id ) = @_;
   my $nt = Net::Twitter::Lite::WithAPIv1_1->new(
-    consumer_key => $consumer_key,
-    consumer_secret => $consumer_secret,
-    access_token_secret => $access_token_secret,
-    access_token => $access_token,
+    consumer_key => $config->{consumer_key},
+    consumer_secret => $config->{consumer_secret},
+    access_token_secret => $config->{access_token_secret},
+    access_token => $config->{access_token},
     ssl => 1,
   );
   my $tweets = $nt->user_timeline({screen_name => $twitter_id, count => 200});
@@ -76,7 +78,7 @@ Twitter ID: @<input type="text" name="name" placeholder="Enter here"><br><br>
 % my $count = 1;
 % for my $tweet(@$tweets) {
   % next if $tweet->{text} =~ /^@/ || $tweet->{text} =~ /^RT/;
-  % $tweet->{text} =~ s/\b(https?\S+)$/<a href="$1" target="_blank">$1<\/a>/g;
+  % $tweet->{text} =~ s/\b(https?\S+)/<a href="$1" target="_blank">$1<\/a>/g;
   <tr>
   <th> <img src="<%= $tweet->{user}{profile_image_url} %>"></th>
   <td><%= b($tweet->{text}) %></td>
