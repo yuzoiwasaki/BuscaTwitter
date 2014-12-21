@@ -21,7 +21,7 @@ sub new {
 }
 
 sub buscar_tweets {
-  my ( $self, $twitter_id ) = @_;
+  my ( $self, $twitter_id, $sort_type ) = @_;
   my $nt = Net::Twitter::Lite::WithAPIv1_1->new(
     consumer_key => $config->{consumer_key},
     consumer_secret => $config->{consumer_secret},
@@ -30,7 +30,21 @@ sub buscar_tweets {
     ssl => 1,
   );
   my $tweets = $nt->user_timeline({screen_name => $twitter_id, count => 200});
-  return $tweets;
+  my $prepared_tweets = [];
+  for my $tweet(@$tweets) {
+    next if $tweet->{text} =~ /^@/ || $tweet->{text} =~ /^RT/;
+    $tweet->{text} =~ s/\b(https?\S+)/<a href="$1" target="_blank">$1<\/a>/g;
+    push @$prepared_tweets, $tweet;
+  }
+  my @sorted_tweets = sort { $b->{$sort_type . "_count"} <=> $a->{$sort_type . "_count"} } @$prepared_tweets;
+  my $ten_tweets = [];
+  my $count = 1;
+  for my $sorted_tweet(@sorted_tweets) {
+    push @$ten_tweets, $sorted_tweet;
+    last if $count >= 10;
+    $count++;
+  }
+  return $ten_tweets;
 }
 
 package main;
@@ -51,9 +65,8 @@ post '/result' => sub {
   my $self = shift;
   my $twitter_id = $self->param('name');
   my $sort_type = $self->param('sort');
-  my $tweets = $self->app->model->buscar_tweets($twitter_id);
-  my @sorted_tweets = sort { $b->{$sort_type . "_count"} <=> $a->{$sort_type . "_count"} } @$tweets;
-  $self->stash->{tweets} = \@sorted_tweets;
+  my $tweets = $self->app->model->buscar_tweets($twitter_id, $sort_type);
+  $self->stash->{tweets} = $tweets;
   $self->render('result');
 };
 
@@ -75,16 +88,11 @@ Twitter ID: @<input type="text" name="name" placeholder="Enter here"><br><br>
 @@ result.html.ep
 % layout 'default';
 <table class="tweets">
-% my $count = 1;
 % for my $tweet(@$tweets) {
-  % next if $tweet->{text} =~ /^@/ || $tweet->{text} =~ /^RT/;
-  % $tweet->{text} =~ s/\b(https?\S+)/<a href="$1" target="_blank">$1<\/a>/g;
   <tr>
   <th> <img src="<%= $tweet->{user}{profile_image_url} %>"></th>
   <td><%= b($tweet->{text}) %></td>
   </tr>
-  % $count++;
-  % last if $count > 10;
 % }
 </table>
 
