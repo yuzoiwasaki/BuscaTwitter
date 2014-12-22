@@ -30,10 +30,10 @@ __DATA__
 % layout 'default';
 <div id="form">
 <form action="/result" method="post">
-<input type="radio" name="sort" value="retweet" checked>Retweet
-<input type="radio" name="sort" value="favorite">Favorite<br><br>
+<label><input type="radio" name="sort" value="retweet" checked>Retweet&nbsp;</label>
+<label><input type="radio" name="sort" value="favorite">Favorite</label><br><br>
 Twitter ID: @<input type="text" name="name" placeholder="Enter here"><br><br>
-<input type="submit" value="Show Tweets">
+<button type="submit" class="btn btn-default">Show Tweets</button>
 </form>
 </div>
 
@@ -54,6 +54,7 @@ Twitter ID: @<input type="text" name="name" placeholder="Enter here"><br><br>
 <head>
 <meta charset="UTF-8">
 <title>BuscaTwitter</title>
+<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
 <style>
 div#header h1 {
   font-family:"Comic Sans MS";
@@ -69,8 +70,8 @@ div#form {
   border:1px solid #999999;
   padding:10px;
   border-radius:8px;
-  width:300px;
-  height:150px;
+  width:400px;
+  height:200px;
 }
 table.tweets {
   width:980px;
