@@ -58,7 +58,8 @@ Twitter ID: @<input type="text" name="name" placeholder="Enter here"><br><br>
 <style>
 div#header h1 {
   font-family:"Comic Sans MS";
-  padding: 10px;
+  margin:20px;
+  padding:20px;
 }
 div#header h1 a {
   color:#008000;
@@ -68,13 +69,16 @@ div#form {
   font-size:20px;
   background-color:#CCCCD0;
   border:1px solid #999999;
-  padding:10px;
+  margin:20px;
+  padding:20px;
   border-radius:8px;
   width:400px;
   height:200px;
 }
 table.tweets {
-  width:980px;
+  margin:20px;
+  padding:20px;
+  width:960px;
   border-collapse:collapse;
 }
 table.tweets th {
