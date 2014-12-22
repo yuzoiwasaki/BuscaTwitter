@@ -1,9 +1,5 @@
 BuscaTwitter
 ============
-# NAME
-BuscaTwitter 
-
-# DESCRIPTION
 BuscaTwitter is an application to extract quickly valuable tweets, like more retweeted or favorited.  
 Before you launch the application, **please generate YAML file using Config::Pit::set**. 
 
