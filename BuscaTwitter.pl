@@ -16,6 +16,7 @@ post '/result' => sub {
   my $self = shift;
   my $twitter_id = $self->param('name');
   my $sort_type = $self->param('sort');
+  return $self->render('error') unless $twitter_id;
   my $instance = BuscaTweet->new;
   my $tweets = $instance->buscar_tweets($twitter_id, $sort_type);
   $self->stash->{tweets} = $tweets;
@@ -47,6 +48,14 @@ Twitter ID: @<input type="text" name="name" placeholder="Enter here"><br><br>
   </tr>
 % }
 </table>
+
+@@ error.html.ep
+% layout 'default';
+<div class="alert alert-danger" role="alert">
+  <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+  <span class="sr-only">Error:</span>
+  Please enter Twitter ID
+</div>
 
 @@ layouts/default.html.ep
 <!DOCTYPE html>
