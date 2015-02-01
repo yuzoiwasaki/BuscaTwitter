@@ -4,6 +4,7 @@ use strict;
 use warnings;
 use Net::Twitter::Lite::WithAPIv1_1;
 use Config::Pit;
+use Regexp::Common qw/URI/;
 
 my $config = pit_get('BuscaTwitter', require => {
   'consumer_key' => 'Twitter API Key',
@@ -31,7 +32,7 @@ sub buscar_tweets {
   my $prepared_tweets = [];
   for my $tweet(@$tweets) {
     next if $tweet->{text} =~ /^@/ || $tweet->{text} =~ /^RT/;
-    $tweet->{text} =~ s/\b(https?\S+)/<a href="$1" target="_blank">$1<\/a>/g;
+    $tweet->{text} =~ s/($RE{URI}{HTTP})/<a href="$1" target="_blank">$1<\/a>/g;
     push @$prepared_tweets, $tweet;
   }
   my @sorted_tweets = sort { $b->{$sort_type . "_count"} <=> $a->{$sort_type . "_count"} } @$prepared_tweets;
