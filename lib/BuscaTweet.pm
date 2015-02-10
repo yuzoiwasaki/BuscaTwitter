@@ -4,6 +4,7 @@ use strict;
 use warnings;
 use Net::Twitter::Lite::WithAPIv1_1;
 use Config::Pit;
+use HTML::Escape qw/escape_html/;
 use Regexp::Common qw/URI/;
 
 my $config = pit_get('BuscaTwitter', require => {
@@ -32,6 +33,7 @@ sub buscar_tweets {
   my $prepared_tweets = [];
   for my $tweet(@$tweets) {
     next if $tweet->{text} =~ /^@/ || $tweet->{text} =~ /^RT/;
+    $tweet->{text} = escape_html($tweet->{text});
     $tweet->{text} =~ s/($RE{URI}{HTTP})/<a href="$1" target="_blank">$1<\/a>/g;
     push @$prepared_tweets, $tweet;
   }
