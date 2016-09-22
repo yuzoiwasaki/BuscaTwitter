@@ -3,6 +3,5 @@ requires 'Net::Twitter::Lite::WithAPIv1_1';
 requires 'Net::OAuth';
 requires 'Config::Pit';
 requires 'HTML::Escape';
-requires 'Regexp::Common';
 
 test_requires 'Test::More';
